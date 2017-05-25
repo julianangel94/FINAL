@@ -1,0 +1,31 @@
+CREATE OR REPLACE FUNCTION mask_function (x IN VARCHAR2)
+RETURN VARCHAR2 IS
+   x VARCHAR2 := '';
+BEGIN
+IF (x.length BETWEEN 1 AND 1000) THEN
+  DBMS_OUTPUT.PUT_LINE ('Error very large character');
+  ELSE IF (x.length <> 3 and x = '*') then
+    REPLACE('x', '*',',x');
+      ElSE IF (x.length = 3 and x = '*') then
+       REPLACE('x', '*',',x.length := 3,x.length := 3,x.length := 3');
+         ELSE IF (x.length = 2 and x = '*') then
+            REPLACE('x', '*','');
+              ELSE
+               DBMS_OUTPUT.PUT_LINE ('character' || x);
+END IF;
+  RETURN x;
+END;
+
+CREATE TABLE masks 
+(
+    mask varchar2(1000) NOT NULL,
+    result varchar2(4000) NOT NULL
+);
+
+
+CREATE OR REPLACE TRIGGER TRG_masks
+    AFTER INSERT ON masks
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO masks (result) VALUES (mask_function(x));
+    END;
