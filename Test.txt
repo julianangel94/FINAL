@@ -29,9 +29,11 @@ CREATE TABLE masks
 CREATE OR REPLACE TRIGGER TRG_masks
     AFTER INSERT ON masks
     FOR EACH ROW
+    DECLARE
+    t = varchar2;
     BEGIN
-       mask_function(x);
-       :new.result := :new.x;
+       t := mask_function(x);
+       :new.result := :new.t;
     END;
 
 
