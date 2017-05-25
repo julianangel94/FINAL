@@ -30,7 +30,8 @@ CREATE OR REPLACE TRIGGER TRG_masks
     AFTER INSERT ON masks
     FOR EACH ROW
     BEGIN
-        INSERT INTO masks (result) VALUES (mask_function(x));
+       mask_function(x);
+       :new.result := :new.x;
     END;
 
 
